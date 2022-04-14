@@ -1,7 +1,7 @@
 --No.584:is null & !=/<>（不等于的两种表达）
 select name
 from Customer
-where referee_id<>2 or referee_id IS NULL;
+where referee_id<>2 or referee_id IS NULL; --Another way for the last code:where ifnull(referee_id,0)<>2;
 
 
 --No.596  Classes More Than 5 Students
