@@ -2,19 +2,19 @@
 
 - Ranking Problem: 排名函数必须有包含 ORDER BY 的 OVER 语句。
      - ROW_NUMBER()
-           - Get a unique sequential number for each row in the specified data
-           - By default, it sorts the data in ascending order and starts assigning ranks for each row.
-           -`select ROW_NUMBER() OVER(order by column_name desc) as row_num
-             from table_name`
+         - Get a unique sequential number for each row in the specified data
+         - By default, it sorts the data in ascending order and starts assigning ranks for each row.
+         -`select ROW_NUMBER() OVER(order by column_name desc) as row_num
+           from table_name`
      - RANK()
-           - Specify rank for each row in the result set对查询出来的记录进行排名
-           - `select RANK() OVER(order by column_name) as rank 
-              from tablename`
-           - Rank函数考虑到了over子句中排序字段值相同的情况
-           - DENSE_RANK()
-                - Specify a unique rank number within the partition as per the specified column value.
-                - If we have duplicate values,SQL assigns different ranks to those rows as well.dense_rank函数在生成序号时是连续的,dense_rank函数出现相同排名时，将不跳过相同排名号
-                - `select DENSE_RANK() OVER(order by column_name) as den_rank 
+         - Specify rank for each row in the result set对查询出来的记录进行排名
+         - `select RANK() OVER(order by column_name) as rank 
+            from tablename`
+         - Rank函数考虑到了over子句中排序字段值相同的情况
+         - DENSE_RANK()
+             - Specify a unique rank number within the partition as per the specified column value.
+             - If we have duplicate values,SQL assigns different ranks to those rows as well.dense_rank函数在生成序号时是连续的,dense_rank函数出现相同排名时，将不跳过相同排名号
+             - `select DENSE_RANK() OVER(order by column_name) as den_rank 
                    from tablename`
      - NTILE()
          - Distribute the number of rows in the specified (N) number of groups.Specify the value for the desired number of groups. 
@@ -59,9 +59,9 @@
         - Select,From, Where, Group by, Having, Order By, Limit
 
 - Convert data format
-        - CAST
-            - `CAST ( expression AS data_type [ ( length ) ] )`
-        - Convert
-            - `CONVERT ( data_type [ ( length ) ] , expression [ , style ] )`
+    - CAST
+        - `CAST ( expression AS data_type [ ( length ) ] )`
+    - Convert
+        - `CONVERT ( data_type [ ( length ) ] , expression [ , style ] )`
                  
                              
