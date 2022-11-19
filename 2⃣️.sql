@@ -16,7 +16,7 @@ Table: Weather
 +---------------+---------+
 id is the primary key for this table.
 This table contains information about the temperature on a certain day.
-Write an SQL query to find all dates' Id with higher temperatures compared to its previous dates (yesterday).
+Write an SQL query to find all dates Id with higher temperatures compared to its previous dates (yesterday).
 --DateDiff:计算时间差 https://blog.csdn.net/Candy_Sir/article/details/85231400
 select distinct w1.id
 FROM Weather w1 INNER JOIN Weather w2 ON DATEDIFF(w1.recordDate, w2.recordDate) = 1
@@ -40,10 +40,11 @@ WHERE  w1.temperature > w2.temperature
 | id          | int     |
 | name        | varchar |
 +-------------+---------+
-id is the primary key column for this table.
-Write an SQL query to swap the seat id of every two consecutive students. If the number of students is odd, the id of the last student is not swapped.
-Return the result table ordered by id in ascending order.
+--id is the primary key column for this table.
+--Write an SQL query to swap the seat id of every two consecutive students. If the number of students is odd, the id of the last student is not swapped.
+--Return the result table ordered by id in ascending order.
 --using CASE WHEN and MOD() method:https://www.w3schools.com/sql/func_mysql_mod.asp; MOD(x,y)| x MOD y | x%y -->x divid by y
+
 SELECT (CASE
         WHEN id = (SELECT MAX(id) FROM seat) AND MOD(id, 2) = 1 THEN id
         WHEN MOD(id, 2) = 0 THEN id-1
@@ -55,6 +56,7 @@ ORDER BY id;
 
 --No.1303:find the team size
 --use window function:ROUND/COUNT() OVER (PARTITION BY() ) https://www.sqltutorial.org/sql-window-functions/sql-partition-by/
+
 select employee_id, count(team_id) over(partition by team_id) as team_size
 from Employee
 group by employee_id;
