@@ -17,8 +17,8 @@ Table1: Accounts
 | id            | int     |
 | name          | varchar |
 +---------------+---------+
-id is the primary key for this table.
-This table contains the account id and the user name of each account.
+--id is the primary key for this table.
+--This table contains the account id and the user name of each account.
 
 Table2: Logins
 +---------------+---------+
