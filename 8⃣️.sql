@@ -64,3 +64,48 @@ ROW_NUMBER()||DENSE_RANK()|| RANK()||NTILE(n)|| PERCENT_RANK() OVER ( --n:该row
 -- NTILE: 将排序分区中的行划分为 特定数量 的组
 -- PERCENT_RANK：计算结果行的百分位数排名
 -- ROW_NUMBER: 从1开始应用的每一行分配一个序号。unique sequential number for each row in the specified field
+
+
+WITH ConsecutiveCountings
+AS (SELECT id,
+    num AS CurrNum,
+    LAG(num) OVER (ORDER BY id) AS PrevNum,
+    LEAD(num) OVER (ORDER BY id) AS NextNum
+    FROM Logs)
+SELECT DISTINCT CurrNum as ConsecutiveNums
+FROM ConsecutiveCountings
+WHERE CurrNum=PrevNum AND CurrNum=NextNum
+
+-- CTE(Common Table Expression):  returns a temporary data set that can be used by another query.
+  -- start from WITH clause before SELECT, UPDATE, INSERT, DELETE, CREATE, VIEW, OR MERGE. WITH can contain multiple CTEs, separated by commas.
+  -- a temporary, which cannot store anywhere. Once executed, the query will be lost.
+  -- make queries readable and helpful to recursive implementation
+    -- Recursive CTE Syntax: the initial CTE is repeatedly executed, returning subsets of data, until the complete result is returned.
+WITH RECURSIVE CTE_expression_name (ColumnNames)
+AS(
+  CTE_query_definition1 --anchor_member
+  UNION ALL -- or we can use UNION, connect anchor & recursive member
+  CTE_query_definition2 --recursive_member
+) 
+-- to view and use CTE results:
+SELECT * FROM CTE_expression_name;
+    -- usage of Recursive CTE: query hierarchical data or graphs. Eg: organizational structure, family tree, restaurant menu, or various routes between cities.
+  -- Multiple CTE can be used for UNION, UNIONALL, JOIN, INTERSECT, EXCEPT
+  -- But cannot use some keywords clauses, such as DISTINGUISH, GROUP BY, HAVE, JOIN
+  -- CTE cannot be nested when using VIEW
+  -- Non-recursive CTE Syntax:
+WITH CTE_expression_name (ColumnName)
+AS (CTE_query_definition)
+  -- to view and use CTE results:
+Select ColumnNames from CTE_expression_name
+
+-- Positional Functions:
+  -- LEAD: get value from row after the current row.
+  -- LAG: get value from row before the current row.
+  -- Syntax: 
+  LEAD/LAG (expression [, offset[, default_value]]) OVER(PARTITION BY columnName ORDER BY columns) AS...
+    -- OFFSET: optional, the number of rows “forward/backward” in the result set to look at. If omitted, default=1
+    -- DEFAULT: optional, be default, it is NULL. If declared the value to be returned if the offset is outside the bounds of the table.
+  -- cannot used with nested functions, and they can not used in WHERE clause
+
+-- ❗️Window Function CheatSheet and Explanation: https://learnsql.com/blog/sql-window-functions-cheat-sheet/
