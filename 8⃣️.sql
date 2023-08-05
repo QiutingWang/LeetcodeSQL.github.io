@@ -66,6 +66,7 @@ ROW_NUMBER()||DENSE_RANK()|| RANK()||NTILE(n)|| PERCENT_RANK() OVER ( --n:该row
 -- ROW_NUMBER: 从1开始应用的每一行分配一个序号。unique sequential number for each row in the specified field
 
 
+-- LeetCode 180 Consecutive Numbers https://leetcode.com/problems/consecutive-numbers/description/
 WITH ConsecutiveCountings
 AS (SELECT id,
     num AS CurrNum,
