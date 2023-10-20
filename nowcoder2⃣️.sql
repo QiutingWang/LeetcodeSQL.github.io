@@ -64,3 +64,32 @@ where datediff(date((select max(start_time)
 group by b.tag
 order by retweet_rate desc
 
+
+-- SQL160 国庆期间每类视频点赞量和转发量
+-- 统计2021年国庆头3天每类视频每天的近一周总点赞量和一周内最大单天转发量，结果按视频类别降序、日期升序排序。假设数据库中数据足够多，至少每个类别下国庆头3天及之前一周的每天都有播放记录。
+select *
+from(
+select tag,
+date_format(start_time, '%Y-%m-%d') as dt,
+sum(sum(if_like)) over(partition by tag order by date_format(start_time, '%Y-%m-%d') rows 6 preceding) as sum_like_cnt_7d,
+max(sum(if_retweet)) over(partition by tag order by date_format(start_time, '%Y-%m-%d') rows 6 preceding) as max_retweet_cnt_7d --今天及前6天
+from tb_user_video_log a
+join tb_video_info b
+on a.video_id=b.video_id
+where date_format(start_time, '%Y-%m-%d') between '2021-09-25' and '2021-10-03'
+group by tag, dt
+) as t1
+where t1.dt between '2021-10-01' and '2021-10-03'
+order by tag desc, dt asc
+-- <窗口函数> over (partition by <用于分组的列名> order by <用于排序的列名> frame_clause <窗口大小>)
+  -- partition by和order by过程不改变原table的行数
+  -- frame_clause:对分组进一步细分，可以用range或rows
+    -- frame_end和frame_start的选择:
+      -- rows current row: 当前行
+      -- rows n preceding:当前行之前的n行
+      -- rows n following:当前行之后的n行
+      -- range n preceding: 等于当前行的值减去n的所有行
+      -- range n following: 等于当前行的值加上n的所有行
+      -- unbounded preceding: 分组中的第一行
+      -- unbounded following: 分组中的最后一行
+  -- 重要参考：https://blog.csdn.net/Txixi/article/details/115338572
